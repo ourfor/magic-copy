@@ -18,7 +18,6 @@ module.exports = {
   devServer: {
     open: true,
     host: '0.0.0.0',
-    static: './dist',
     compress: true,
     port: 9000,
   },
@@ -45,8 +44,8 @@ module.exports = {
             to: "./manifest.json",
         },
         {
-            from: "./public/demo.jpg",
-            to: "./demo.jpg"
+            from: "./public/*.*",
+            to: "./"
         }
       ],
       options: {},
