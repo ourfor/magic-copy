@@ -99,15 +99,15 @@ export default function useFigmaEditor(image: Blob) {
     }
     env.wasm.wasmPaths = {
       "ort-wasm-simd-threaded.wasm":
-        "https://kevmo314.github.io/magic-copy/ort-wasm-simd-threaded.wasm",
+        "./ort-wasm-simd-threaded.wasm",
       "ort-wasm-simd.wasm":
-        "https://kevmo314.github.io/magic-copy/ort-wasm-simd.wasm",
+        "./ort-wasm-simd.wasm",
       "ort-wasm-threaded.wasm":
-        "https://kevmo314.github.io/magic-copy/ort-wasm-threaded.wasm",
-      "ort-wasm.wasm": "https://kevmo314.github.io/magic-copy/ort-wasm.wasm",
+        "./ort-wasm-threaded.wasm",
+      "ort-wasm.wasm": "./ort-wasm.wasm",
     };
     InferenceSession.create(
-      "https://kevmo314.github.io/magic-copy/interactive_module_quantized_592547_2023_03_19_sam6_long_uncertain.onnx"
+      "./interactive_module_quantized_592547_2023_03_19_sam6_long_uncertain.onnx"
     )
       .then((model) => model.run(feeds))
       .then(({ output, mask }) => {
