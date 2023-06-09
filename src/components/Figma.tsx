@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useFigmaEditor from "./hooks/useFigmaEditor";
 import { LeftToolbar, RightFigmaToolbar } from "./Toolbars";
 
@@ -22,7 +22,12 @@ export default function Figma({
     onClick,
     onUndo,
     isUndoable,
+    onClear
   } = useFigmaEditor(image);
+
+  useEffect(() => {
+    onClear()
+  }, [image])
 
   React.useEffect(() => {
     if (!bitmap) return;
@@ -61,6 +66,7 @@ export default function Figma({
           <div className="magic-copy-loading">Loading embeddings...</div>
         )}
         <RightFigmaToolbar
+          onClear={onClear}
           onUndo={onUndo}
           isUndoDisabled={!isUndoable}
           onApply={async () => {

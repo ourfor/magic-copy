@@ -159,6 +159,11 @@ export default function useFigmaEditor(image: Blob) {
       setClicks((clicks) => clicks.slice(0, -1));
       predMasksRef.current.pop();
     },
+    onClear() {
+      setClicks((clicks) => [])
+      const length = predMasksRef.current.length
+      for (let i = 0; i < length; i++) predMasksRef.current.pop()
+    },
     isUndoable: clicks.length > 0,
   };
 }

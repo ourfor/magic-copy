@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "magic-copy",
   "scripts": {
+    "watch:web": "webpack serve --open --config webpack/webpack.web.dev.js",
     "watch:chrome": "webpack --config webpack/webpack.chrome.dev.js --watch",
     "build:chrome": "webpack --config webpack/webpack.chrome.prod.js",
     "watch:firefox": "webpack --config webpack/webpack.firefox.dev.js --watch",
@@ -35,6 +36,7 @@
     "typescript": "^5.0.4",
     "webpack": "^5.81.0",
     "webpack-cli": "^5.1.0",
+    "webpack-dev-server": "^4.15.0",
     "webpack-merge": "^5.0.0"
   }
 }
