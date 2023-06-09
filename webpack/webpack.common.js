@@ -5,14 +5,13 @@ const srcDir = path.join(__dirname, "..", "src");
 
 module.exports = {
   entry: {
-    sandbox: path.join(srcDir, "sandbox.ts"),
   },
   output: {
     path: path.join(__dirname, "../dist/js"),
     filename: "[name].js",
   },
   optimization: {
-    runtimeChunk: false,
+    runtimeChunk: true,
   },
   module: {
     rules: [
