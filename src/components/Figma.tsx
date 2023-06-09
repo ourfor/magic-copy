@@ -105,29 +105,6 @@ export default function Figma({
         }}
         mode={mode}
       />
-      {showAd && (
-        <div className="magic-copy-ad">
-          <div>
-            <a href="https://forms.gle/Y7EiPpELcLtjmJrw9">Give us feedback.</a>
-            We're working onthe next thing.
-          </div>
-          <div>
-            <button
-              onClick={() => {
-                setShowAd(false);
-                window.parent.postMessage(
-                  {
-                    pluginMessage: { action: "hide-ad" },
-                  },
-                  "*"
-                );
-              }}
-            >
-              x
-            </button>
-          </div>
-        </div>
-      )}
     </>
   );
 }
