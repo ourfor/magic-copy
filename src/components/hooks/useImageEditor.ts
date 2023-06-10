@@ -1,5 +1,5 @@
 import { env, InferenceSession, Tensor } from "onnxruntime-web";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DEFAULT_ENDPOINT } from "../../lib/constants";
 import { traceOnnxMaskToSVG } from "../../lib/mask_utils";
 import { modelData } from "../../lib/models";
@@ -14,6 +14,7 @@ export default function useFigmaEditor(image: Blob) {
   // the masked image
   const [mask, setMask] = React.useState<Tensor | null>(null);
   const [renderedImage, setRenderedImage] = React.useState<Blob | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string|null>(null)
   const predMasksRef = React.useRef<Tensor[]>([]);
 
   React.useEffect(() => {
@@ -116,6 +117,11 @@ export default function useFigmaEditor(image: Blob) {
       });
   }, [bitmap, embeddings, clicks]);
 
+  useEffect(() => {
+    if (renderedImage) setPreviewUrl(URL.createObjectURL(renderedImage))
+    else setPreviewUrl(null)
+  }, [renderedImage])
+
   const traced = React.useMemo(() => {
     if (!bitmap || !mask) {
       return null;
@@ -151,6 +157,7 @@ export default function useFigmaEditor(image: Blob) {
     mask,
     traced,
     renderedImage,
+    previewUrl,
     isLoading: !bitmap || !embeddings,
     onClick(x: number, y: number, type: "left" | "right") {
       setClicks((clicks) => [...clicks, { x, y }]);

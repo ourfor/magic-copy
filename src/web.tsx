@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import React, { useEffect, useRef, useState } from "react";
-import Figma from "./components/Figma";
+import Figma from "./components/Editor";
 
 function Editor() {
     const fileInput = useRef<HTMLInputElement>(null)
@@ -23,8 +23,8 @@ function Editor() {
 
     return (
         <div className="editor">
-            {image ?  <Figma image={image} initialShowAd={false} /> : null}
             <input className="file-selector" ref={fileInput} accept="image/png, image/jpeg" onChange={e => updateSelectedFile(e.target.value)} type="file" />
+            {image ?  <Figma image={image} initialShowAd={false} /> : null}
         </div>
     )
 
