@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "magic-copy",
   "scripts": {
-    "start": "webpack serve --open --config webpack/webpack.web.dev.js"
+    "start": "webpack serve --open --config webpack/webpack.dev.js"
   },
   "author": "Kevin Wang <kevmo314@gmail.com>",
   "repository": {

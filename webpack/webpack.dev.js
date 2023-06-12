@@ -2,16 +2,27 @@ const webpack = require("webpack");
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 const srcDir = path.join(__dirname, "..", "src");
+const InlineChunkHtmlPlugin = require("react-dev-utils/InlineChunkHtmlPlugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
+  devtool: "inline-source-map",
+  mode: "development",
   entry: {
+    main: path.join(srcDir, "index.tsx"),
   },
   output: {
-    path: path.join(__dirname, "../dist/js"),
+    path: path.join(__dirname, "../dist/"),
     filename: "[name].js",
   },
+  devServer: {
+    open: true,
+    host: '0.0.0.0',
+    compress: true,
+    port: 9000,
+  },
   optimization: {
-    runtimeChunk: true,
+    runtimeChunk: false,
   },
   module: {
     rules: [
@@ -29,15 +40,14 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: ".",
-          to: "../",
-          context: "public",
-          filter: (resourcePath) => {
-            return !resourcePath.endsWith(".json");
-          },
-        },
+            from: "./public/*.*",
+            to: "./"
+        }
       ],
       options: {},
     }),
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+    })
   ],
 };
