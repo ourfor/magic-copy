@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Layer, Stage, Image, Line } from "react-konva";
 import { EditorMode } from "../lib/constants";
 import { download } from "../lib/util";
-import { UrlImage } from "./hooks/MyImage";
+import { UrlImage } from "./hooks/UrlImage";
 import useFigmaEditor from "./hooks/useImageEditor";
 import { LeftToolbar, RightFigmaToolbar } from "./Toolbars";
 
