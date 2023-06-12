@@ -40,10 +40,6 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-            from: "./public/manifest.figma.json",
-            to: "./manifest.json",
-        },
-        {
             from: "./public/*.*",
             to: "./"
         }
