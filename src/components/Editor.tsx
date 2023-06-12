@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Layer, Stage, Image, Line } from "react-konva";
 import { EditorMode } from "../lib/constants";
 import { download } from "../lib/util";
-import { MyImage } from "./hooks/MyImage";
+import { UrlImage } from "./hooks/MyImage";
 import useFigmaEditor from "./hooks/useImageEditor";
 import { LeftToolbar, RightFigmaToolbar } from "./Toolbars";
 
@@ -137,7 +137,6 @@ function Renderer({
   mode: EditorMode;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const layerRef = useRef<Konva.Layer>(null)
   const clipLayerRef = useRef<Konva.Layer>(null)
   const [tool, setTool] = React.useState<DrawType>(DrawType.PEN)
   const [lines, setLines] = React.useState<DrawData[]>([])
@@ -210,8 +209,8 @@ function Renderer({
     if (e.evt.button === 0 && e.evt.buttons === 1) {
       const pos = e.target.getStage()?.getPointerPosition();
       if (!pos) return
-      setLines([...lines, { tool, points: [pos.x, pos.y] }]);
-      setPaths([...paths, [{x: pos.x, y: pos.y}]])
+      setLines([{ tool, points: [pos.x, pos.y] }]);
+      setPaths([[{x: pos.x, y: pos.y}]])
     }
   }
 
@@ -254,20 +253,8 @@ function Renderer({
   const isClipMode = mode === "clip"
 
   return (
-    <div style={{
-        position: "relative",
-        width: width,
-        height: height, }}>
-      <div style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          zIndex: -1,
-          width: width,
-          height: height,
-          background:
-            "repeating-conic-gradient(#AAAAAA 0% 25%, white 0% 50%) 50% / 20px 20px",
-        }} /> 
+    <div style={{position: "relative", width, height}}>
+      <div style={{position: "absolute", top: 0, left: 0, zIndex: -1, width, height, background: "repeating-conic-gradient(#AAAAAA 0% 25%, white 0% 50%) 50% / 20px 20px", }} /> 
       <canvas
         hidden={isClipMode}
         ref={canvasRef}
@@ -281,7 +268,7 @@ function Renderer({
           onMaskClick(x, y);
         }}
       />
-           <Stage width={width} 
+      <Stage width={width} 
         height={height}
         onMouseDown={drawStart}
         onMouseMove={drawing}
@@ -292,9 +279,8 @@ function Renderer({
           const {offsetX: x, offsetY: y} = e.evt
           onMaskClick(x*DEFAULT_SCALE, y*DEFAULT_SCALE)
         }}>
-        <Layer visible={!isClipMode} key={"image-hit"} ref={layerRef}></Layer>
         <Layer ref={clipLayerRef} visible={isClipMode} key={"image-preview"}>
-          {previewUrl ? <MyImage width={width} 
+          {previewUrl ? <UrlImage width={width} 
                             height={height} 
                             url={previewUrl} /> : null}
         </Layer>
@@ -304,7 +290,7 @@ function Renderer({
               key={i}
               points={line.points}
               stroke="#df4b26"
-              strokeWidth={5}
+              strokeWidth={2}
               tension={0.5}
               lineCap="round"
               lineJoin="round"

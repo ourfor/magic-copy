@@ -7,7 +7,7 @@ export interface MyImageProps {
     width: number
     height: number
 }
-export function MyImage({
+export function UrlImage({
     url, width, height
 }: MyImageProps) {
     const [image] = useImage(url)
