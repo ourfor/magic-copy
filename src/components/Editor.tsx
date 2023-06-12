@@ -71,7 +71,7 @@ export default function Figma({
       >
         <LeftToolbar mode={mode} onModeChange={setMode} />
         {isLoading && (
-          <div className="magic-copy-loading">Loading embeddings...</div>
+          <div className="magic-copy-loading">模型加载中...</div>
         )}
         <RightFigmaToolbar
           onClear={onClear}
@@ -136,6 +136,7 @@ function Renderer({
   onMaskClick: (x: number, y: number) => void;
   mode: EditorMode;
 }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
   const layerRef = useRef<Konva.Layer>(null)
   const clipLayerRef = useRef<Konva.Layer>(null)
   const [tool, setTool] = React.useState<DrawType>(DrawType.PEN)
@@ -195,15 +196,15 @@ function Renderer({
   }
 
   React.useEffect(() => {
-    const eles = [layerRef.current?.getNativeCanvasElement()]
+    const eles = [canvasRef.current]
     eles.forEach(canvas => {
       draw(canvas)
     })
 
   }, [image, traced, mode, canvasScale, svgScale]);
 
-  const width = Math.round(image.width * canvasScale) / DEFAULT_SCALE;
-  const height = Math.round(image.height * canvasScale) / DEFAULT_SCALE;
+  const width = Math.round(image.width * canvasScale);
+  const height = Math.round(image.height * canvasScale);
 
   const drawStart = (e: KonvaEventObject<MouseEvent>) => {
     if (e.evt.button === 0 && e.evt.buttons === 1) {
@@ -253,10 +254,39 @@ function Renderer({
   const isClipMode = mode === "clip"
 
   return (
-      <Stage width={width} height={height}
+    <div style={{
+        position: "relative",
+        width: width,
+        height: height, }}>
+      <div style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          zIndex: -1,
+          width: width,
+          height: height,
+          background:
+            "repeating-conic-gradient(#AAAAAA 0% 25%, white 0% 50%) 50% / 20px 20px",
+        }} /> 
+      <canvas
+        hidden={isClipMode}
+        ref={canvasRef}
+        width={width}
+        height={height}
+        onClick={(e) => {
+          if (mode !== "edit") return;
+          const rect = e.currentTarget.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          onMaskClick(x, y);
+        }}
+      />
+           <Stage width={width} 
+        height={height}
         onMouseDown={drawStart}
         onMouseMove={drawing}
         onMouseUp={drawEnd}
+        visible={isClipMode}
         onClick={(e) => {
           if (mode === "preview" || mode === "clip") return
           const {offsetX: x, offsetY: y} = e.evt
@@ -285,5 +315,6 @@ function Renderer({
           ))}
         </Layer>
       </Stage>
+    </div>
   )
 }
